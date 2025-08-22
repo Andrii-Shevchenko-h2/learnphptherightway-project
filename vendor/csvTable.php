@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-$getSecureString = fn(string $str): string => htmlspecialchars($str);
+$getSecureString = fn(string $str): string => htmlspecialchars($str, ENT_QUOTES);
 
 $generateTableCaption = fn(string $name): string => '<caption>'. $getSecureString($name) .'</caption>';
 
 $formatDate = fn(string $date): string => date('D, \t\h\e jS F, Y', strtotime($getSecureString($date)));
 
-$parseAmountColor = fn(string $amount): string => $amount[1] === '-' ? '<span style="color: red">'. $getSecureString($amount) .'</span>' : '<span style="color: green">'. $getSecureString($amount) .'</span>';
+$formatAmountColor = fn(string $amount): string => $amount[0] === '-' ? '<span style="color: red">'. $getSecureString($amount) .'</span>' : '<span style="color: green">'. $getSecureString($amount) .'</span>';
 
-$generateTableCell = function(array $row) use ($formatDate, $parseAmountColor, $getSecureString): string {
+$generateTableCell = function(array $row) use ($formatDate, $formatAmountColor, $getSecureString): string {
   $string = '';
 
     foreach ($row as $name => $data) {
@@ -18,8 +18,7 @@ $generateTableCell = function(array $row) use ($formatDate, $parseAmountColor, $
     if ($name === 'Date') {
       $string .= '<td>'. $formatDate($data) .'</td>';
     } elseif ($name === "Amount\n") {
-      error_log($data);
-      $string .= '<td>'. $parseAmountColor($data) .'</td>';
+      $string .= '<td>'. $formatAmountColor($data) .'</td>';
     } else {
       $string .= '<td>'. $getSecureString($data) .'</td>';
     }

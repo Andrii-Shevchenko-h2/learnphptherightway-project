@@ -14,6 +14,6 @@ $csvTable ??= '';
     </head>
     <body>
         <?= $csvTables ?>
-        <?= $includesTop ?>
+        <?= $includesBottom ?>
     </body>
 </html>
