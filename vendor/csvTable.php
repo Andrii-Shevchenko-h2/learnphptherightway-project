@@ -6,11 +6,23 @@ $getSecureString = fn(string $str): string => htmlspecialchars($str);
 
 $generateTableCaption = fn(string $name): string => '<caption>'. $getSecureString($name) .'</caption>';
 
-$generateTableCell = function(array $row) use ($getSecureString): string {
+$formatDate = fn(string $date): string => date('D, \t\h\e jS F, Y', strtotime($getSecureString($date)));
+
+$parseAmountColor = fn(string $amount): string => $amount[1] === '-' ? '<span style="color: red">'. $getSecureString($amount) .'</span>' : '<span style="color: green">'. $getSecureString($amount) .'</span>';
+
+$generateTableCell = function(array $row) use ($formatDate, $parseAmountColor, $getSecureString): string {
   $string = '';
 
-  foreach ($row as $data) {
-    $string .= '<td>'. $getSecureString($data) .'</td>';
+    foreach ($row as $name => $data) {
+
+    if ($name === 'Date') {
+      $string .= '<td>'. $formatDate($data) .'</td>';
+    } elseif ($name === "Amount\n") {
+      error_log($data);
+      $string .= '<td>'. $parseAmountColor($data) .'</td>';
+    } else {
+      $string .= '<td>'. $getSecureString($data) .'</td>';
+    }
   }
 
   return $string;
