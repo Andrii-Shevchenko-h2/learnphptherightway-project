@@ -11,9 +11,12 @@ define('VIEWS_PATH', $root . 'views' . DIRECTORY_SEPARATOR);
 /* YOUR CODE (Instructions in README.md) */
 require(APP_PATH . 'compose.php');
 
-$csvFiles = $csvParse(FILES_PATH));
+$csvFiles = $csvParse(FILES_PATH);
+
+$csvTables = '';
 
 foreach ($csvFiles as $csvName => $csvData) {
-  $printCsvTable($csvFile);
+  $csvTables .= $generateCsvTable($csvName, $csvData);
 }
 
+require_once(VIEWS_PATH.'main.php');

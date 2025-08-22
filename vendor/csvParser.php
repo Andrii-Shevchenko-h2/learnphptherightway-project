@@ -14,10 +14,10 @@ $csvParse = function(string $dir): array {
   $processedFiles = [];
 
   foreach ($allFilesLines as $fileName => $fileLines) {
-    $header = explode(',', $fileLines[0]);
+    $header = explode(';', $fileLines[0]);
 
     $processedLines = array_map(function($line) use ($header) {
-      $tempArr = explode(',', $line);
+      $tempArr = explode(';', $line);
       $newTempArr = [];
 
       for ($i = 0; $i < count($header); $i++) {
